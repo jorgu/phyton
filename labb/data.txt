@@ -1,0 +1,3 @@
+rad 1,ett,ettett
+rad2,två, tvåtvå
+rad 3, tre, tretre
