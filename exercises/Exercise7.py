@@ -11,49 +11,11 @@ Säsong,Datum,Hemmalag,Bortalag,MålHemmalag,Målbortalag,Förlängning,Omgång,
    [0]      [1]        [2]        [5]       [4][5][6][7]    [8]             [9]
 
 '''
-def getAllTeams(inDataReader):
 
-    lagLista = []
-
-    for row in inDataReader:
-        if row[4].isdigit():    
-            hemmalag = row[2]
-            bortalag = row[3]
-
-            if not(hemmalag in lagLista):
-                lagLista.append(hemmalag)
-
-            if not(bortalag in lagLista):
-                lagLista.append(bortalag)
-    
-    return lagLista
-
-#####################################################################################
-
-def beräknaLagpoäng(lagetsMål, motståndarensMål, förlängning):
-     
-    if förlängning == 'X':
-        vinst    = 2
-        oavgjort = 1
-        förlust  = 1
-    else:
-        vinst    = 3
-        förlust  = 0 
-
-
-    if lagetsMål > motståndarensMål:          
-        poäng = vinst
-    elif lagetsMål == motståndarensMål:
-        poäng = oavgjort
-    else:       # underförstått förlust
-        poäng = förlust
-        
-    return poäng
-
-#####################################################################################
 
 
 import csv
+import allaLagISerien
 
 myFile = open('innebandyresultat.csv',      # öppnar datafilen för läsning (streaming)
               'r', encoding='utf-8')        # och hanterar 'åäö'
@@ -62,8 +24,8 @@ myDataReader = csv.reader(myFile)           # skapar en variabel som håller ord
                                             # var programmet befinner sig i filen, t ex vilken rad
                                             
 
-allaLag = getAllTeams(myDataReader)         # får en array med alla lag i serien från filen
-myFile.seek(0)                              # filpekare ställs om till att peka på första post i filen igen
+allaLag = allaLagISerien.getAllTeams(myDataReader)  # får en array med alla lag i serien från filen
+myFile.seek(0)                                      # filpekare ställs om till att peka på första post i filen igen
 
 lagMedMestPoäng = {                         # en dictionary som håller reda på lag med
     'lagnamn': '',                          # mest poäng jus nu
@@ -86,12 +48,12 @@ for lag in allaLag:
             if hemmalag == lag:
                 aktuellalagetsMål   = målHemmalag
                 motståndarlagetsMål = målBortalag
-                totalpoäng = totalpoäng + beräknaLagpoäng (aktuellalagetsMål, motståndarlagetsMål, förlängning)
+                totalpoäng = totalpoäng + allaLagISerien.beräknaLagpoäng (aktuellalagetsMål, motståndarlagetsMål, förlängning)
 
             if bortalag == lag:
                 aktuellalagetsMål   = målBortalag
                 motståndarlagetsMål = målHemmalag
-                totalpoäng = totalpoäng + beräknaLagpoäng (aktuellalagetsMål, motståndarlagetsMål, förlängning)
+                totalpoäng = totalpoäng + allaLagISerien.beräknaLagpoäng (aktuellalagetsMål, motståndarlagetsMål, förlängning)
             
     if totalpoäng > lagMedMestPoäng['poäng']:
         lagMedMestPoäng['lagnamn'] = lag

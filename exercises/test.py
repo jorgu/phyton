@@ -1,5 +1,4 @@
-# Vilket lag vann säsongen 2019-2020?
-
+# Hur många poäng fick Skara IBK säsongen 2019-2020?
 
 '''
    [0]   [1]    [2]     [3]        [4]         [5]        [6]       [7]    [8]   [9]
@@ -76,7 +75,7 @@ for lag in allaLag:
 
     for row in myDataReader:
 
-        if row[4].isdigit():                # ignorerar rubrikraden
+        if row[4].isdigit():                    # ignorerar rubrikraden
             hemmalag    = row[2]
             bortalag    = row[3]
             målHemmalag = int(row[4])
@@ -102,5 +101,7 @@ for lag in allaLag:
 
 myFile.close()                              # stänger filen efter läst klart
 
-print (lagMedMestPoäng["lagnamn"] + ' vann serien och fick ' + str(lagMedMestPoäng['poäng']) + ' poäng')
+print (lagMedMestPoäng['lagnamn'] + ' fick ' + str(lagMedMestPoäng['poäng']) + ' poäng')
+
+
 
